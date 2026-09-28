@@ -1,0 +1,58 @@
+# Publishes a GitHub Release when a version tag is pushed.
+# Tags look like v1.2.3 or v1.2.3-rc.1.
+
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Publish release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check tag version
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME}"
+          if [[ ! "${tag}" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?$ ]]; then
+            echo "Tag '${tag}' is not a version. Use vMAJOR.MINOR.PATCH, for example v1.2.3."
+            exit 1
+          fi
+
+      - name: Publish GitHub release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME}"
+          assets=(
+            README.md
+            sync-game-mods.ps1
+            sync-game-mods.template.bat
+          )
+          if [[ "${tag}" == *-* ]]; then
+            prerelease=(--prerelease)
+          else
+            prerelease=()
+          fi
+          if gh release view "${tag}" >/dev/null 2>&1; then
+            gh release upload "${tag}" "${assets[@]}" --clobber
+          else
+            gh release create "${tag}" "${assets[@]}" \
+              --title "${tag}" \
+              --generate-notes \
+              "${prerelease[@]}"
+          fi

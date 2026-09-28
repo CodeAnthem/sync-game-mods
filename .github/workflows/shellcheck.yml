@@ -1,0 +1,25 @@
+# ShellCheck covers shell scripts (.sh, bash, ksh, and files with a shell shebang).
+
+name: ShellCheck
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  shellcheck:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@2.0.0
+        with:
+          version: v0.11.0

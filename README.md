@@ -1,5 +1,8 @@
 # Sync Game Mods
 
+[![Lines of Code](https://raw.githubusercontent.com/CodeAnthem/sync-game-mods/badges/loc.svg)](https://github.com/CodeAnthem/sync-game-mods/tree/badges)
+[![ShellCheck](https://github.com/CodeAnthem/sync-game-mods/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/CodeAnthem/sync-game-mods/actions/workflows/shellcheck.yml)
+
 Mirror selected game folders from a remote share onto a local games folder. The local folder for a game must already exist. If the same folder name also exists under the remote root, its contents are copied onto the local folder with `robocopy /MIR`.
 
 Use this when mods, saves, or other game files live on a share and you want the matching local install kept in sync. Games that are not installed locally, or that are missing on the remote, are skipped.
@@ -108,3 +111,13 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\sync-game-mods.ps1 ^
 | `-RoboArgs` | no | Robocopy switches separated by spaces. If omitted, the script uses the same set as the template. |
 | `-Caller` | no | Path of the batch file that launched the script. The log is written beside that file. |
 | `-LogFile` | no | Explicit log path. Overrides `-Caller`. |
+
+## Releases
+
+Push a version tag to publish a GitHub Release of that commit. The tag is `vMAJOR.MINOR.PATCH`, for example `v1.0.0`. A tag with a hyphen, such as `v1.2.3-rc.1`, is published as a prerelease.
+
+Each release includes the files from that commit:
+
+- `sync-game-mods.ps1`
+- `sync-game-mods.template.bat`
+- `README.md`
