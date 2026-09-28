@@ -1,0 +1,80 @@
+# Project
+*.bat
+*.log
+
+# Leak protection
+secrets/
+*.age
+*.pem
+*.key
+*.p12
+*.pfx
+*.ppk
+*.jks
+*.keystore
+keys.txt
+**/age-key.txt
+id_dsa
+id_ecdsa
+id_ecdsa_sk
+id_ed25519
+id_ed25519_sk
+id_rsa
+credentials.json
+secrets.json
+service-account.json
+.env
+.env.*
+config.local.*
+*.local.json
+*.local.yaml
+*.local.yml
+*.secret
+*.secrets
+*.secret.json
+*.secret.yaml
+*.secret.yml
+
+# Temp files
+.tmp/
+tmp/
+temp/
+.cache/
+*.tmp
+*.temp
+*.bak
+*.orig
+*.rej
+*.lock~
+*.un~
+*.pid
+*.pid.lock
+
+# Logs
+logs/
+log/
+nohup.out
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.stackdump
+*.lnk
+
+# Editors
+*.swp
+*.swo
+*.swn
+*~
+.#*
+\#*\#
+.netrwhist
+Session.vim
+Sessionx.vim
+
+# Keep
+!sync-game-mods.template.bat

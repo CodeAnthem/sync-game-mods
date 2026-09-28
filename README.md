@@ -1,17 +1,16 @@
 # Sync Game Mods
 
-[![Lines of Code](https://raw.githubusercontent.com/CodeAnthem/sync-game-mods/badges/loc.svg)](https://github.com/CodeAnthem/sync-game-mods/tree/badges)
-[![ShellCheck](https://github.com/CodeAnthem/sync-game-mods/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/CodeAnthem/sync-game-mods/actions/workflows/shellcheck.yml)
+[![Lines of Code](https://raw.githubusercontent.com/CodeAnthem/sync-game-mods/images/loc.svg)](https://github.com/CodeAnthem/sync-game-mods/tree/images) [![PowerShell](https://img.shields.io/badge/PowerShell-5391FE?logo=powershell&logoColor=white)](https://learn.microsoft.com/powershell/) [![Windows](https://img.shields.io/badge/Windows-0078D6?logo=windows&logoColor=white)](https://www.microsoft.com/windows)
 
-Mirror selected game folders from a remote share onto a local games folder. The local folder for a game must already exist. If the same folder name also exists under the remote root, its contents are copied onto the local folder with `robocopy /MIR`.
+Mirror selected game folders from a remote share onto a local games folder. The local folder for a game must already exist. When the same folder name exists under the remote root, `robocopy /MIR` copies that folder onto the local one.
 
-Use this when mods, saves, or other game files live on a share and you want the matching local install kept in sync. Games that are not installed locally, or that are missing on the remote, are skipped.
+Games that are not installed locally, or that are missing on the remote, are skipped.
 
 ## Requirements
 
 - Windows
 - PowerShell
-- `robocopy.exe` (included with Windows)
+- `robocopy.exe`, included with Windows
 
 ## Files
 
@@ -20,11 +19,11 @@ Use this when mods, saves, or other game files live on a share and you want the 
 | `sync-game-mods.ps1` | Sync logic. Several batch files can call this one script with different paths and game lists. |
 | `sync-game-mods.template.bat` | Launcher template. Copy it and fill in your paths. |
 
-`.gitignore` ignores every `.bat` file, then puts `sync-game-mods.template.bat` back. Your own launchers and the `.log` files they write stay on this PC.
+`.gitignore` ignores every `.bat` file and every `.log` file, then tracks `sync-game-mods.template.bat` again. Your own launchers and the logs they write stay on this PC.
 
 ## Create a launcher
 
-1. Copy `sync-game-mods.template.bat` in the same folder as `sync-game-mods.ps1`.
+1. Copy `sync-game-mods.template.bat` into the same folder as `sync-game-mods.ps1`.
 2. Rename the copy, for example `sync-my-games.bat`.
 3. Edit the three settings at the top:
 
@@ -34,9 +33,7 @@ set "LOCAL_ROOT=D:\Games"
 set "GAMES=Game One,Game Two"
 ```
 
-`REMOTE_ROOT` is the share that holds the source game folders. `LOCAL_ROOT` is the local games folder. `GAMES` is a comma-separated list of folder names. Each name is a single folder under both roots, not a path.
-
-For that example the folders look like this:
+`REMOTE_ROOT` is the share that holds the source game folders. `LOCAL_ROOT` is the local games folder. `GAMES` is a comma-separated list of folder names. Each name is one folder under both roots, not a path.
 
 ```text
 \\server\share\Games\Game One
@@ -46,31 +43,35 @@ D:\Games\Game One
 D:\Games\Game Two
 ```
 
-`D:\Games\Game One` must already exist. The script does not create a game folder that is missing locally, and it skips a name that is missing on the share.
+`D:\Games\Game One` must already exist. The script does not create a missing local game folder, and it skips a name that is missing on the share.
 
 Optional settings in the same file:
 
-- `EXCLUDE_FILES` — file patterns passed to robocopy as `/XF`. The template skips temp files, logs, dumps, `Thumbs.db`, and `desktop.ini`.
-- `EXCLUDE_DIRS` — directory names passed as `/XD`. Leave it empty to exclude none.
-- `ROBO_ARGS` — robocopy switches. The script adds the two folders, `/XF`, and `/XD` itself.
+| Setting | Effect |
+| --- | --- |
+| `EXCLUDE_FILES` | File patterns passed to robocopy as `/XF`. The template skips temp files, logs, dumps, `Thumbs.db`, and `desktop.ini`. |
+| `EXCLUDE_DIRS` | Directory names passed as `/XD`. Leave it empty to exclude none. |
+| `ROBO_ARGS` | Robocopy switches. The script adds the two folders, `/XF`, and `/XD` itself. |
 
-To keep more than one list, copy the template again and give the new file its own name, roots, and games. Each copy logs beside itself.
+Copy the template again to keep more than one list. Each copy has its own name, roots, games, and log.
 
 ## Run
 
-Double-click your `.bat` file, or run it from a command prompt. The window stays open at the end so you can read the summary.
+Double-click the `.bat` file, or run it from a command prompt. The window stays open so you can read the summary.
 
 The script prints one line per game:
 
-- `[OK]` — mirrored
-- `[SKIP]` — not installed locally, missing on the remote, or not a single folder name
-- `[FAIL]` — robocopy exit code 8 or higher
+| Line | Meaning |
+| --- | --- |
+| `[OK]` | Mirrored |
+| `[SKIP]` | Not installed locally, missing on the remote, or not a single folder name |
+| `[FAIL]` | Robocopy exit code 8 or higher |
 
-It then prints counts for synced, skipped, and failed games. The process exits with code `1` if any game failed or a required path was missing. Otherwise it exits with `0`.
+It then prints counts for synced, skipped, and failed games. The process exits with code `1` when any game failed or a required path was missing. Otherwise it exits with `0`.
 
 ## Mirror behavior
 
-`/MIR` copies new and changed files from the remote folder onto the local folder, and deletes local files and folders that are not on the remote. Anything you added only on this PC inside a synced game folder will be removed on the next run.
+`/MIR` copies new and changed files from the remote folder onto the local folder, and deletes local files and folders that are not on the remote. Files you added only on this PC inside a synced game folder are removed on the next run.
 
 The template also passes:
 
@@ -108,16 +109,6 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\sync-game-mods.ps1 ^
 | `-Games` | yes | Comma-separated folder names |
 | `-Exclude` | no | Comma-separated file patterns (`/XF`). If omitted, the script uses its built-in temp, log, and dump list. |
 | `-ExcludeDir` | no | Comma-separated directory names (`/XD`) |
-| `-RoboArgs` | no | Robocopy switches separated by spaces. If omitted, the script uses the same set as the template. |
+| `-RoboArgs` | no | Robocopy switches separated by spaces. If omitted, the script uses the template set and also `/NFL` (hide the file list). |
 | `-Caller` | no | Path of the batch file that launched the script. The log is written beside that file. |
 | `-LogFile` | no | Explicit log path. Overrides `-Caller`. |
-
-## Releases
-
-Push a version tag to publish a GitHub Release of that commit. The tag is `vMAJOR.MINOR.PATCH`, for example `v1.0.0`. A tag with a hyphen, such as `v1.2.3-rc.1`, is published as a prerelease.
-
-Each release includes the files from that commit:
-
-- `sync-game-mods.ps1`
-- `sync-game-mods.template.bat`
-- `README.md`

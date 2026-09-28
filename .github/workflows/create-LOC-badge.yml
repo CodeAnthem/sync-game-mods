@@ -1,0 +1,34 @@
+name: Create LOC badge
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: images
+  cancel-in-progress: true
+
+jobs:
+  badge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Count lines
+        uses: CodeAnthem/GHA-LoC-Badge@2447899fb1cf9fa092c09a94006a3508b4d4d911
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          directory: .
+          badge: loc.svg
+          patterns: "*.ps1|*.bat"
+          badge_label: lines of code
+          badge_branch: images
