@@ -29,6 +29,6 @@ jobs:
         with:
           directory: .
           badge: loc.svg
-          patterns: "*.ps1|*.bat"
+          patterns: "*.ps1"
           badge_label: lines of code
           badge_branch: images
