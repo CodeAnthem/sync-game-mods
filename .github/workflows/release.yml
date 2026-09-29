@@ -38,20 +38,20 @@ jobs:
         run: |
           set -euo pipefail
           tag="${GITHUB_REF_NAME}"
-          assets=(
-            README.md
-            sync-game-mods.ps1
+          archive="sync-game-mods-${tag}.zip"
+          zip "${archive}" \
+            README.md \
+            sync-game-mods.ps1 \
             sync-game-mods.template.bat
-          )
           if [[ "${tag}" == *-* ]]; then
             prerelease=(--prerelease)
           else
             prerelease=()
           fi
           if gh release view "${tag}" >/dev/null 2>&1; then
-            gh release upload "${tag}" "${assets[@]}" --clobber
+            gh release upload "${tag}" "${archive}" --clobber
           else
-            gh release create "${tag}" "${assets[@]}" \
+            gh release create "${tag}" "${archive}" \
               --title "${tag}" \
               --generate-notes \
               "${prerelease[@]}"
