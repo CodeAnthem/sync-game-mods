@@ -1,6 +1,6 @@
 # Sync Game Mods
 
-![Lines of Code](https://raw.githubusercontent.com/CodeAnthem/sync-game-mods/images/loc.svg) ![PowerShell](https://img.shields.io/badge/PowerShell-5391FE?logo=powershell&logoColor=white) ![Windows](https://img.shields.io/badge/Windows-0078D6?logo=windows&logoColor=white)
+![Lines of Code](https://raw.githubusercontent.com/CodeAnthem/sync-game-mods/images/loc.svg) ![PowerShell](https://img.shields.io/badge/PowerShell-5391FE?logo=powershell&logoColor=white) ![Windows](https://img.shields.io/badge/Windows-0078D6?logo=windows&logoColor=white) [![GitHub latest commit](https://badgen.net/github/last-commit/CodeAnthem/sync-game-mods)](https://GitHub.com/CodeAnthem/sync-game-mods/commit/) [![GitHub license](https://img.shields.io/github/license/CodeAnthem/sync-game-mods.svg)](https://github.com/CodeAnthem/sync-game-mods/blob/master/LICENSE)
 
 Mirror selected game folders from a share onto this PC. Windows 10 or later.
 
