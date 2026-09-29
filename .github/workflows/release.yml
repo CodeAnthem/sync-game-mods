@@ -56,3 +56,4 @@ jobs:
               --generate-notes \
               "${prerelease[@]}"
           fi
+          gh release edit "${tag}" --draft=false
